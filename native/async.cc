@@ -63,7 +63,7 @@ NAN_METHOD(GetTextAsync) {
         detectRegions = To<bool>(info[1]).FromJust();
     }
     // call the decoder here
-    Callback *callback = new Callback(info[1].As<Function>());
+    Callback *callback = new Callback(info[info.Length() - 1].As<Function>());
     // Async
     AsyncQueueWorker(new OcrWorker(callback, path, detectRegions));
 }

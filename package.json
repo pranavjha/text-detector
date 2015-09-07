@@ -3,8 +3,8 @@
     "version": "0.0.1",
     "main": "./lib",
     "scripts": {
-        "install": "./node_modules/.bin/node-gyp rebuild",
-        "test": "mocha test"
+        "install": "grunt exec:rebuild",
+        "test": "grunt test"
     },
     "dependencies": {
         "nan": "latest",
@@ -12,6 +12,13 @@
     },
     "devDependencies": {
         "mocha": "latest",
-        "chai": "latest"
+        "chai": "latest",
+        "grunt": "latest",
+        "grunt-exec": "latest",
+        "grunt-docco": "latest",
+        "grunt-gh-pages": "latest",
+        "grunt-mocha-test": "latest",
+        "grunt-contrib-clean": "latest",
+        "grunt-contrib-jshint": "latest"
     }
 }
