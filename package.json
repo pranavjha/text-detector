@@ -1,0 +1,16 @@
+{
+    "name": "scene-text",
+    "version": "0.0.1",
+    "scripts": {
+        "postinstall": "./node_modules/.bin/node-gyp clean",
+        "test": "mocha test"
+    },
+    "dependencies": {
+        "nan": "latest",
+        "node-gyp": "latest"
+    },
+    "devDependencies": {
+        "mocha": "latest",
+        "chai": "latest"
+    }
+}
