@@ -4,6 +4,7 @@
     "main": "./lib",
     "scripts": {
         "postinstall": "./node_modules/.bin/node-gyp clean",
+        "install": "node-gyp rebuild",
         "test": "mocha test"
     },
     "dependencies": {
