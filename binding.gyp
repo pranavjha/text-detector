@@ -1,7 +1,7 @@
 {
     "targets": [
         {
-            "target_name": "text-detection",
+            "target_name": "textdetector",
             "dependencies": [
                 "native/ocr/ocr.gyp:ocr"
             ],

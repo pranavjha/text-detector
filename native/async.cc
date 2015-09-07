@@ -1,11 +1,3 @@
-/*********************************************************************
- * NAN - Native Abstractions for Node.js
- *
- * Copyright (c) 2015 NAN contributors
- *
- * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>
- ********************************************************************/
-
 #include <iostream>
 #include <node.h>
 #include <nan.h>
@@ -51,7 +43,7 @@ class OcrWorker : public AsyncWorker {
         string decodedText;
 };
 
-// Asynchronous access to the `Estimate()` function
+// Asynchronous access to the `Ocr()` function
 NAN_METHOD(GetTextAsync) {
     // get the value of path
     String::Utf8Value p(info[0]);
@@ -62,8 +54,8 @@ NAN_METHOD(GetTextAsync) {
     if (info.Length() > 2){
         detectRegions = To<bool>(info[1]).FromJust();
     }
-    // call the decoder here
+    // callback will be the last argument
     Callback *callback = new Callback(info[info.Length() - 1].As<Function>());
-    // Async
+    // call the Ocr here - Async
     AsyncQueueWorker(new OcrWorker(callback, path, detectRegions));
 }

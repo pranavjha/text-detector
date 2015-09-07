@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <node.h>
 #include <nan.h>

@@ -10,10 +10,36 @@
 
 > native node module for scene text recognition using tesseract and openCV
 
+`text-detector` is a native nodejs module for extracting text from real-life photographs and scenes.
+
 
 ## How to use
 
 
+``` javascript
 
-## Configuration Options passed
+var textDetector = require('text-detector');
+
+// synchronous API
+
+// detects text in the image at the given path.
+var text = textDetector.getTextSync('/sample/path/to/a/file');
+
+// skip the region detection
+var text = textDetector.getTextSync('/sample/path/to/a/file', false);
+
+// asynchronous API
+
+// detects text in the image at the given path.
+textDetector.getText('/sample/path/to/a/file', function (err, text) {
+    // do something with the text here
+});
+
+// skip the region detection
+textDetector.getText('/sample/path/to/a/file', true, function (err, text) {
+    // do something with the text here
+});
+
+```
+
 
