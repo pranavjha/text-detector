@@ -1,12 +1,12 @@
 {
     "targets": [
         {
-            "target_name": "addon",
+            "target_name": "text-detection",
             "sources": [
-                "addon.cc",
-                "pi_est.cc",
-                "sync.cc",
-                "async.cc"
+                "./lib/native/addon.cc",
+                "./lib/native/pi_est.cc",
+                "./lib/native/sync.cc",
+                "./lib/native/async.cc"
             ],
             "include_dirs": ["<!(node -e \"require('nan')\")"]
         }
