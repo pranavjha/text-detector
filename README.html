@@ -59,8 +59,31 @@
 <blockquote>
 <p>native node module for scene text recognition using tesseract and openCV</p>
 </blockquote>
+<p><code>text-detector</code> is a native nodejs module for extracting text from real-life photographs and scenes.</p>
 <h2 id="how-to-use">How to use</h2>
-<h2 id="configuration-options-passed">Configuration Options passed</h2>
+<pre><code class="lang-javascript">
+<span class="hljs-keyword">var</span> textDetector = <span class="hljs-built_in">require</span>(<span class="hljs-string">'text-detector'</span>);
+
+<span class="hljs-comment">// synchronous API</span>
+
+<span class="hljs-comment">// detects text in the image at the given path.</span>
+<span class="hljs-keyword">var</span> text = textDetector.getTextSync(<span class="hljs-string">'/sample/path/to/a/file'</span>);
+
+<span class="hljs-comment">// skip the region detection</span>
+<span class="hljs-keyword">var</span> text = textDetector.getTextSync(<span class="hljs-string">'/sample/path/to/a/file'</span>, <span class="hljs-literal">false</span>);
+
+<span class="hljs-comment">// asynchronous API</span>
+
+<span class="hljs-comment">// detects text in the image at the given path.</span>
+textDetector.getText(<span class="hljs-string">'/sample/path/to/a/file'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, text</span>) </span>{
+<span class="hljs-comment">// do something with the text here</span>
+});
+
+<span class="hljs-comment">// skip the region detection</span>
+textDetector.getText(<span class="hljs-string">'/sample/path/to/a/file'</span>, <span class="hljs-literal">true</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, text</span>) </span>{
+<span class="hljs-comment">// do something with the text here</span>
+});
+</code></pre>
 
             </div>
             
