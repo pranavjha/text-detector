@@ -1,20 +1,38 @@
-/*********************************************************************
- * NAN - Native Abstractions for Node.js
- *
- * Copyright (c) 2015 NAN contributors
- *
- * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>
- ********************************************************************/
 
+#include <iostream>
+#include <node.h>
 #include <nan.h>
 #include "ocr/main.h"
 #include "sync.h"
 
-// Simple synchronous access to the `Estimate()` function
-NAN_METHOD(CalculateSync) {
-  // expect a number as the first argument
-  int points = info[0]->Uint32Value();
-  double est = Estimate(points);
+using namespace std;
+using namespace v8;
+using namespace Nan;
+using v8::Function;
+using v8::Local;
+using v8::Number;
+using v8::Value;
+using Nan::AsyncQueueWorker;
+using Nan::AsyncWorker;
+using Nan::Callback;
+using Nan::HandleScope;
+using Nan::New;
+using Nan::Null;
+using Nan::To;
 
-  info.GetReturnValue().Set(est);
+// Simple synchronous access to the `GetText()` function
+NAN_METHOD(GetTextSync) {
+    // get the value of path
+    String::Utf8Value p(info[0]);
+    string path = string(*p);
+    // the second (optional) parameter is false if region detection has to be skipped
+    bool detectRegions = true;
+    // if the second argument is passed, we use it
+    if (info.Length() > 1){
+        detectRegions = To<bool>(info[1]).FromJust();
+    }
+    // call the decoder here
+    string decodedText = Ocr(path, detectRegions);
+    // set the return value
+    info.GetReturnValue().Set(Nan::New(decodedText).ToLocalChecked());
 }

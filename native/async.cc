@@ -6,10 +6,15 @@
  * MIT License <https://github.com/nodejs/nan/blob/master/LICENSE.md>
  ********************************************************************/
 
+#include <iostream>
+#include <node.h>
 #include <nan.h>
 #include "ocr/main.h"
 #include "async.h"
 
+using namespace std;
+using namespace v8;
+using namespace Nan;
 using v8::Function;
 using v8::Local;
 using v8::Number;
@@ -22,43 +27,43 @@ using Nan::New;
 using Nan::Null;
 using Nan::To;
 
-class PiWorker : public AsyncWorker {
- public:
-  PiWorker(Callback *callback, int points)
-    : AsyncWorker(callback), points(points), estimate(0) {}
-  ~PiWorker() {}
+class OcrWorker : public AsyncWorker {
+    public:
+        OcrWorker(Callback *callback, string path, bool detectRegions) : AsyncWorker(callback), path(path), detectRegions(detectRegions), decodedText("") {}
 
-  // Executed inside the worker-thread.
-  // It is not safe to access V8, or V8 data structures
-  // here, so everything we need for input and output
-  // should go on `this`.
-  void Execute () {
-    estimate = Estimate(points);
-  }
+        ~OcrWorker() {}
 
-  // Executed when the async work is complete
-  // this function will be run inside the main event loop
-  // so it is safe to use V8 again
-  void HandleOKCallback () {
-    HandleScope scope;
+        void Execute () {
+            decodedText = Ocr(path, detectRegions);
+        }
 
-    Local<Value> argv[] = {
-        Null()
-      , New<Number>(estimate)
-    };
+        void HandleOKCallback () {
+            Local<Value> argv[] = {
+                Null(),
+                Nan::New(decodedText).ToLocalChecked()
+            };
+            callback->Call(2, argv);
+        }
 
-    callback->Call(2, argv);
-  }
-
- private:
-  int points;
-  double estimate;
+    private:
+        string path;
+        bool detectRegions;
+        string decodedText;
 };
 
 // Asynchronous access to the `Estimate()` function
-NAN_METHOD(CalculateAsync) {
-  int points = To<int>(info[0]).FromJust();
-  Callback *callback = new Callback(info[1].As<Function>());
-
-  AsyncQueueWorker(new PiWorker(callback, points));
+NAN_METHOD(GetTextAsync) {
+    // get the value of path
+    String::Utf8Value p(info[0]);
+    string path = string(*p);
+    // the second (optional) parameter is false if region detection has to be skipped
+    bool detectRegions = true;
+    // if the second argument is passed, we use it
+    if (info.Length() > 2){
+        detectRegions = To<bool>(info[1]).FromJust();
+    }
+    // call the decoder here
+    Callback *callback = new Callback(info[1].As<Function>());
+    // Async
+    AsyncQueueWorker(new OcrWorker(callback, path, detectRegions));
 }

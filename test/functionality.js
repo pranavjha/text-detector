@@ -1,17 +1,15 @@
 'use strict';
-var addon = require('../lib');
+var sceneText = require('../lib');
 var expect = require('chai').expect;
 
 describe('functionality', function() {
     it('should be able to run in sync mode', function() {
-        var calculations = 100;
-        var result = addon.calculateSync(calculations);
-        expect(Math.floor(result)).to.eql(3);
+        var result = sceneText.getTextSync('/sample/path/to/a/file');
+        expect(result).to.eql('/sample/path/to/a/file');
     });
     it('should be able to run in async mode', function(done) {
-        var calculations = 100;
-        addon.calculateAsync(calculations, function(err, result) {
-            expect(Math.floor(result)).to.eql(3);
+        sceneText.getText('/sample/path/to/a/file', function(err, result) {
+            expect(result).to.eql('/sample/path/to/a/file');
             done(err);
         });
     });

@@ -11,6 +11,6 @@
 
 #include <nan.h>
 
-NAN_METHOD(CalculateSync);
+NAN_METHOD(GetTextSync);
 
 #endif  // EXAMPLES_ASYNC_PI_ESTIMATE_SYNC_H_
