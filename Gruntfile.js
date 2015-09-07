@@ -124,7 +124,7 @@ module.exports = function(grunt) {
                 options: {
                     base: '.docs',
                     // GH_TOKEN is the environment variable holding the access token for the repository
-                    repo: 'https://' + process.env.GH_TOKEN + '@github.com/pranavjha/scene-text.git',
+                    repo: 'https://' + process.env.GH_TOKEN + '@github.com/pranavjha/text-detector.git',
                     clone: '.gh_pages',
                     message: 'auto commit on <%= grunt.template.today("yyyy-mm-dd") %>',
                     // This configuration will suppress logging and sanitize error messages.
