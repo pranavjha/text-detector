@@ -1,6 +1,7 @@
 {
     "name": "scene-text",
     "version": "0.0.1",
+    "main": "./lib",
     "scripts": {
         "postinstall": "./node_modules/.bin/node-gyp clean",
         "test": "mocha test"
