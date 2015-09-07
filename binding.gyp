@@ -2,13 +2,18 @@
     "targets": [
         {
             "target_name": "text-detection",
-            "sources": [
-                "./native/index.cc",
-                "./native/pi_est.cc",
-                "./native/sync.cc",
-                "./native/async.cc"
+            "dependencies": [
+                "native/ocr/ocr.gyp:ocr"
             ],
-            "include_dirs": ["<!(node -e \"require('nan')\")"]
+            "include_dirs": [
+                "<!(node -e \"require('nan')\")",
+                "native"
+            ],
+            "sources": [
+                "native/index.cc",
+                "native/async.cc",
+                "native/sync.cc"
+            ]
         }
     ]
 }
