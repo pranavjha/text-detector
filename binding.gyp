@@ -3,7 +3,7 @@
         {
             "target_name": "text-detection",
             "sources": [
-                "./native/addon.cc",
+                "./native/index.cc",
                 "./native/pi_est.cc",
                 "./native/sync.cc",
                 "./native/async.cc"
