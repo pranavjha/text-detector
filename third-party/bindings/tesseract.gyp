@@ -1,4 +1,5 @@
 {
+    "includes": [ "./common.gyp" ],
     "targets": [
         {
             "target_name": "tesseract",
@@ -32,6 +33,7 @@
                 "../tesseract/api/capi.cpp",
                 "../tesseract/api/pdfrenderer.cpp",
                 "../tesseract/api/renderer.cpp",
+                "../tesseract/api/tesseractmain.cpp",
                 "../tesseract/ccmain/adaptions.cpp",
                 "../tesseract/ccmain/applybox.cpp",
                 "../tesseract/ccmain/control.cpp",
@@ -76,6 +78,7 @@
                 "../tesseract/ccstruct/dppoint.cpp",
                 "../tesseract/ccstruct/fontinfo.cpp",
                 "../tesseract/ccstruct/genblob.cpp",
+                "../tesseract/ccstruct/imagedata.cpp",
                 "../tesseract/ccstruct/linlsq.cpp",
                 "../tesseract/ccstruct/matrix.cpp",
                 "../tesseract/ccstruct/mod128.cpp",
@@ -134,12 +137,9 @@
                 "../tesseract/classify/clusttool.cpp",
                 "../tesseract/classify/cutoffs.cpp",
                 "../tesseract/classify/errorcounter.cpp",
-                "../tesseract/classify/extract.cpp",
                 "../tesseract/classify/featdefs.cpp",
-                "../tesseract/classify/flexfx.cpp",
                 "../tesseract/classify/float2int.cpp",
                 "../tesseract/classify/fpoint.cpp",
-                "../tesseract/classify/fxdefs.cpp",
                 "../tesseract/classify/intfeaturedist.cpp",
                 "../tesseract/classify/intfeaturemap.cpp",
                 "../tesseract/classify/intfeaturespace.cpp",
@@ -164,7 +164,6 @@
                 "../tesseract/classify/tessclassifier.cpp",
                 "../tesseract/classify/trainingsample.cpp",
                 "../tesseract/classify/trainingsampleset.cpp",
-                "../tesseract/classify/xform2d.cpp",
                 "../tesseract/cube/altlist.cpp",
                 "../tesseract/cube/beam_search.cpp",
                 "../tesseract/cube/bmp_8.cpp",
@@ -261,10 +260,37 @@
                 "../tesseract/textord/underlin.cpp",
                 "../tesseract/textord/wordseg.cpp",
                 "../tesseract/textord/workingpartset.cpp",
+                # "../tesseract/training/ambiguous_words.cpp",
+                # "../tesseract/training/boxchar.cpp",
+                # "../tesseract/training/classifier_tester.cpp",
+                # "../tesseract/training/cntraining.cpp",
+                # "../tesseract/training/combine_tessdata.cpp",
+                # "../tesseract/training/commandlineflags.cpp",
+                # "../tesseract/training/commontraining.cpp",
+                # "../tesseract/training/dawg2wordlist.cpp",
+                # "../tesseract/training/degradeimage.cpp",
+                # "../tesseract/training/fileio.cpp",
+                # "../tesseract/training/ligature_table.cpp",
+                # "../tesseract/training/mergenf.cpp",
+                # "../tesseract/training/mftraining.cpp",
+                # "../tesseract/training/normstrngs.cpp",
+                # "../tesseract/training/pango_font_info.cpp",
+                # "../tesseract/training/set_unicharset_properties.cpp",
+                # "../tesseract/training/shapeclustering.cpp",
+                # "../tesseract/training/stringrenderer.cpp",
+                # "../tesseract/training/tessopt.cpp",
+                # "../tesseract/training/text2image.cpp",
+                # "../tesseract/training/tlog.cpp",
+                # "../tesseract/training/unicharset_extractor.cpp",
+                # "../tesseract/training/unicharset_training_utils.cpp",
+                # "../tesseract/training/wordlist2dawg.cpp",
                 "../tesseract/viewer/scrollview.cpp",
                 "../tesseract/viewer/svmnode.cpp",
                 "../tesseract/viewer/svpaint.cpp",
                 "../tesseract/viewer/svutil.cpp",
+                # "../tesseract/vs2010/port/gettimeofday.cpp",
+                # "../tesseract/vs2010/port/strcasestr.cpp",
+                # "../tesseract/vs2010/port/strtok_r.cpp",
                 "../tesseract/wordrec/associate.cpp",
                 "../tesseract/wordrec/chop.cpp",
                 "../tesseract/wordrec/chopper.cpp",
@@ -275,8 +301,6 @@
                 "../tesseract/wordrec/lm_consistency.cpp",
                 "../tesseract/wordrec/lm_pain_points.cpp",
                 "../tesseract/wordrec/lm_state.cpp",
-                "../tesseract/wordrec/makechop.cpp",
-                "../tesseract/wordrec/olutil.cpp",
                 "../tesseract/wordrec/outlines.cpp",
                 "../tesseract/wordrec/params_model.cpp",
                 "../tesseract/wordrec/pieces.cpp",
@@ -286,6 +310,47 @@
                 "../tesseract/wordrec/tface.cpp",
                 "../tesseract/wordrec/wordclass.cpp",
                 "../tesseract/wordrec/wordrec.cpp"
+            ],
+            'conditions': [
+                ['OS=="win"',
+                    {
+                        'defines': [
+                            '__MSW32__',
+                            '_CRT_SECURE_NO_WARNINGS',
+                            'WINDLLNAME="libtesseract"',
+                        ],
+                        'include_dirs': [
+                            'port',
+                        ],
+                        'sources': [
+                            'port/gettimeofday.cpp',
+                            'port/strcasestr.cpp',
+                            'port/strtok_r.cpp',
+                        ],
+                        'link_settings': {
+                            'libraries': [
+                                '-lws2_32.lib',
+                                '-lUser32.lib',
+                            ],
+                        },
+                        'configurations': {
+                            'Debug': {
+                                'msvs_settings': {
+                                    'VCCLCompilerTool': {
+                                        'CompileAs': '2',
+                                    },
+                                },
+                            },
+                            'Release': {
+                                'msvs_settings': {
+                                    'VCCLCompilerTool': {
+                                        'CompileAs': '2',
+                                    },
+                                },
+                            },
+                        },
+                    }
+                ]
             ]
         }
     ]

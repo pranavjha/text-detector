@@ -1,10 +1,11 @@
 {
+    "includes": [ "./common.gyp" ],
     "targets": [
         {
             "target_name": "leptonica",
             "type": "static_library",
             "include_dirs": [
-                "../leptonica/src"
+                "../leptonica/src/leptonica/src"
             ],
             "sources": [
                 "../leptonica/src/adaptmap.c",
@@ -23,6 +24,7 @@
                 "../leptonica/src/bmf.c",
                 "../leptonica/src/bmpio.c",
                 "../leptonica/src/bmpiostub.c",
+                "../leptonica/src/bootnumgen.c",
                 "../leptonica/src/boxbasic.c",
                 "../leptonica/src/boxfunc1.c",
                 "../leptonica/src/boxfunc2.c",
@@ -44,7 +46,6 @@
                 "../leptonica/src/conncomp.c",
                 "../leptonica/src/convertfiles.c",
                 "../leptonica/src/convolve.c",
-                "../leptonica/src/convolvelow.c",
                 "../leptonica/src/correlscore.c",
                 "../leptonica/src/dewarp1.c",
                 "../leptonica/src/dewarp2.c",
@@ -54,6 +55,8 @@
                 "../leptonica/src/dwacomb.2.c",
                 "../leptonica/src/dwacomblow.2.c",
                 "../leptonica/src/edge.c",
+                "../leptonica/src/encoding.c",
+                "../leptonica/src/endiantest.c",
                 "../leptonica/src/enhance.c",
                 "../leptonica/src/fhmtauto.c",
                 "../leptonica/src/fhmtgen.1.c",
@@ -66,16 +69,19 @@
                 "../leptonica/src/fmorphgenlow.1.c",
                 "../leptonica/src/fpix1.c",
                 "../leptonica/src/fpix2.c",
+                # freetype requires something else also
+                # "../leptonica/src/freetype.c",
                 "../leptonica/src/gifio.c",
                 "../leptonica/src/gifiostub.c",
                 "../leptonica/src/gplot.c",
                 "../leptonica/src/graphics.c",
                 "../leptonica/src/graymorph.c",
-                "../leptonica/src/graymorphlow.c",
                 "../leptonica/src/grayquant.c",
                 "../leptonica/src/grayquantlow.c",
                 "../leptonica/src/heap.c",
                 "../leptonica/src/jbclass.c",
+                "../leptonica/src/jp2kheader.c",
+                "../leptonica/src/jp2kheaderstub.c",
                 "../leptonica/src/jp2kio.c",
                 "../leptonica/src/jp2kiostub.c",
                 "../leptonica/src/jpegio.c",
@@ -96,8 +102,10 @@
                 "../leptonica/src/paintcmap.c",
                 "../leptonica/src/parseprotos.c",
                 "../leptonica/src/partition.c",
-                "../leptonica/src/pdfio.c",
-                "../leptonica/src/pdfiostub.c",
+                "../leptonica/src/pdfio1.c",
+                "../leptonica/src/pdfio1stub.c",
+                "../leptonica/src/pdfio2.c",
+                "../leptonica/src/pdfio2stub.c",
                 "../leptonica/src/pix1.c",
                 "../leptonica/src/pix2.c",
                 "../leptonica/src/pix3.c",
@@ -142,7 +150,6 @@
                 "../leptonica/src/rotateam.c",
                 "../leptonica/src/rotateamlow.c",
                 "../leptonica/src/rotateorth.c",
-                "../leptonica/src/rotateorthlow.c",
                 "../leptonica/src/rotateshear.c",
                 "../leptonica/src/runlength.c",
                 "../leptonica/src/sarray.c",
@@ -157,6 +164,7 @@
                 "../leptonica/src/skew.c",
                 "../leptonica/src/spixio.c",
                 "../leptonica/src/stack.c",
+                "../leptonica/src/stringcode.c",
                 "../leptonica/src/sudoku.c",
                 "../leptonica/src/textops.c",
                 "../leptonica/src/tiffio.c",
@@ -168,6 +176,7 @@
                 "../leptonica/src/webpio.c",
                 "../leptonica/src/webpiostub.c",
                 "../leptonica/src/writefile.c",
+                "../leptonica/src/xtractprotos.c",
                 "../leptonica/src/zlibmem.c",
                 "../leptonica/src/zlibmemstub.c"
             ]
