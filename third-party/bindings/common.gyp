@@ -3,13 +3,15 @@
         'conditions': [
             ['OS=="linux"',
                 {
-                    'cflags_cc!': [ '-fno-exceptions' ],
-                    'cflags': [ '-O3', '-march=native', '-w' ],
+                    'cflags_cc!': [ '-fno-exceptions', '-fno-rtti' ],
+                    'cflags_cc+': ['-frtti'],
+                    'cflags': [ '-O3', '-march=native', '-w' ]
                 }
             ],
             ['OS=="mac"',
                 {
                     'xcode_settings': {
+                        'GCC_ENABLE_CPP_RTTI': 'YES',
                         'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
                         'OTHER_CFLAGS': [ '-O3', '-march=native', '-w' ]
                     }
