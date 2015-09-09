@@ -1,23 +1,20 @@
-#include "main.h"
-
-#include <iostream>
-
-using namespace std;
-
-
 /* textdetection.cpp
- *     Author: krithixy
+ *
+ * A demo program of the Extremal Region Filter algorithm described in
+ * Neumann L., Matas J.: Real-Time Scene Text Localization and Recognition, CVPR 2012
+ *
+ * Created on: Sep 23, 2013
+ *     Author: Lluis Gomez i Bigorda <lgomez AT cvc.uab.es>
  */
 
 #include  "opencv2/text.hpp"
 #include  "opencv2/highgui.hpp"
 #include  "opencv2/imgproc.hpp"
 #include "opencv2/core/utility.hpp"
-
 #include  <vector>
 #include  <iostream>
 #include  <iomanip>
-
+#include "opencv/cv.h"
 using namespace std;
 using namespace cv;
 using namespace cv::text;
@@ -49,55 +46,41 @@ void er_draw(vector<Mat> &channels, vector<vector<ERStat> > &regions, vector<Vec
 vector<Rect> computeGroupsWithMinArea(Mat &src,vector<Mat> &channels,float minArea);
 vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERStat> > regions,vector< vector<Vec2i> > nm_region_groups,vector<Rect> nm_boxes);
 Regions computeRegionGroups(Mat &src,vector<Mat> &channels,float minArea);
+outputOCR detectAndDecode(Mat &src);
 outputOCR Ocr(string path,Rect box){
 
     namedWindow("grouping",WINDOW_NORMAL);
     Mat src = imread(path);
-    outputOCR output;
-    vector<Rect> groups_boxes;
-    Point tl,br;
-    tl.x=0;
-    tl.y=0;
-    br.x=src.size().width;
-    br.y=src.size().height;
-    box=Rect(tl,br);
-
-
-    cout<<box.tl()<<"\t"<<box.br();
-
-    groups_boxes.push_back(box);
-    // Extract channels to be processed individually
-    vector<Mat> channels;
-    computeNMChannels(src, channels);
-
-    int cn = (int)channels.size();
-    // Append negative channels to detect ER- (bright regions over dark background)
-    for (int c = 0; c < cn-1; c++)
-        channels.push_back(255-channels[c]);
-    cvtColor(src,src,COLOR_RGB2GRAY);
-    adaptiveThreshold(src, src, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 3, 0);
-    //threshold(src, src, 100, 255, THRESH_BINARY_INV);
-    vector<Rect>   boxes;
-    vector<string> words;
-    vector<float>  confidences;
-    string op;
-    Ptr<OCRTesseract> ocr = OCRTesseract::create();
-    ocr->run(src, op, &boxes, &words, &confidences, OCR_LEVEL_WORD);
-    cout << "OCR output = " << op <<  "lenght = " << op.size() << endl;
+    Mat clonesrc = src.clone();
+    Mat croppedImage = clonesrc(Rect(box.tl().x,box.tl().y,box.br().x - box.tl().x, box.br().y - box.tl().y));
+    outputOCR output=detectAndDecode(croppedImage);
+    //cvtColor(src,src,COLOR_RGB2GRAY);
+//    Mat dst = Mat::zeros(src.rows+2, src.cols+2, CV_8UC1);
+//    //adaptiveThreshold(src, src, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY, 3, 0);
+//    for(int c=0;c<(int)channels.size();c++){
+//        floodFill(channels[c], dst,cv::Point(130,130), 255,0, cv::Scalar(100), 0,(4 + (255 << 8) + FLOODFILL_FIXED_RANGE + FLOODFILL_MASK_ONLY));
+//
+//    }
+//    vector<Rect>   boxes;
+//    imwrite("/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/_3.jpg",dst);
+//    vector<string> words;
+//    vector<float>  confidences;
+//    string op;
+//    Ptr<OCRTesseract> ocr = OCRTesseract::create();
+//    ocr->run(dst, op, &boxes, &words, &confidences, OCR_LEVEL_WORD);
+   // cout << "OCR output = " << op <<  "length = " << op.size() << endl;
 
     //vector<decodedTxtRegion> decodedTxt=doOCR(src,channels,groups_boxes);
-    output.x1=box.tl().x;
-    output.x2=box.br().x;
-    output.y1=box.tl().y;
-    output.y2=box.br().y;
-    //output.decodedText=decodedTxt;
     return output;
 }
 outputOCR Ocr (string path)
 {
     namedWindow("grouping",WINDOW_NORMAL);
     Mat src = imread(path);
-
+    outputOCR output= detectAndDecode(src);
+    return output;
+}
+outputOCR detectAndDecode(Mat &src){
     // Extract channels to be processed individually
     vector<Mat> channels;
     computeNMChannels(src, channels);
@@ -131,6 +114,7 @@ outputOCR Ocr (string path)
         groups_boxes.clear();
     }
     return output;
+
 }
 vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERStat> > regions,vector< vector<Vec2i> > nm_region_groups,vector<Rect> nm_boxes){
     /*Text Recognition (OCR)*/
@@ -157,11 +141,13 @@ vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERS
 
         Mat group_img = Mat::zeros(image.rows+2, image.cols+2, CV_8UC1);
         er_draw(channels, regions, nm_region_groups[i], group_img);
-
-        Mat group_segmentation;
+        imwrite("/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/_3.jpg",group_img);
+                Mat group_segmentation;
         group_img.copyTo(group_segmentation);
         //image(nm_boxes[i]).copyTo(group_img);
         group_img(nm_boxes[i]).copyTo(group_img);
+
+
         copyMakeBorder(group_img,group_img,15,15,15,15,BORDER_CONSTANT,Scalar(0));
 
         vector<Rect>   boxes;
@@ -185,7 +171,7 @@ vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERS
             boxes[j].x += nm_boxes[i].x-15;
             boxes[j].y += nm_boxes[i].y-15;
 
-            cout << "  word = " << words[j] << "\t confidence = " << confidences[j] << endl;
+            //cout << "  word = " << words[j] << "\t confidence = " << confidences[j] << endl;
             words_detection.push_back(words[j]);
             rectangle(out_img, boxes[j].tl(), boxes[j].br(), Scalar(255,0,255),3);
             Size word_size = getTextSize(words[j], FONT_HERSHEY_SIMPLEX, (double)scale_font, (int)(3*scale_font), NULL);
@@ -313,9 +299,12 @@ void er_draw(vector<Mat> &channels, vector<vector<ERStat> > &regions, vector<Vec
     }
 }
 //int main(){
-//    string path="/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/011.jpg";
-//    Rect box;
+//    string path="/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/010.jpg";
+//
+//    Point tl,br;
+//    tl.x=141;tl.y=131;
+//    br.x=290;br.y=167;
+//    Rect box(tl,br);
 //    outputOCR op= Ocr(path,box);
-//    cout<<"fsd";
+//
 //}
-
