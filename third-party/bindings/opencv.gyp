@@ -22,7 +22,6 @@
                 "../tesseract/textord",
                 "../tesseract/viewer",
                 "../tesseract/wordrec",
-                "platform-includes/osx/opencv",
                 "../opencv/include",
                 "../opencv/3rdparty/openexr",
                 "../opencv/3rdparty/openexr/Half/",
@@ -958,6 +957,42 @@
                 "../opencv_contrib/modules/xphoto/src/grayworld_white_balance.cpp",
                 "../opencv_contrib/modules/xphoto/src/inpainting.cpp",
                 "../opencv_contrib/modules/xphoto/src/simple_color_balance.cpp"
+            ],
+            "conditions": [
+                ["OS==\"win\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/osx/opencv"
+                        ],
+                        "sources": [
+                            "../tesseract/vs2010/port/gettimeofday.cpp",
+                            "../tesseract/vs2010/port/strcasestr.cpp",
+                            "../tesseract/vs2010/port/strtok_r.cpp"
+                        ],
+                        "link_settings": {
+                            "libraries": [
+                                "-lws2_32.lib",
+                                "-lUser32.lib"
+                            ]
+                        },
+                        "configurations": {
+                            "Debug": {
+                                "msvs_settings": {
+                                    "VCCLCompilerTool": {
+                                        "CompileAs": "2"
+                                    }
+                                }
+                            },
+                            "Release": {
+                                "msvs_settings": {
+                                    "VCCLCompilerTool": {
+                                        "CompileAs": "2"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
             ]
         }
     ]

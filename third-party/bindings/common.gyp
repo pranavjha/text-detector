@@ -1,41 +1,55 @@
 {
-    'target_defaults': {
-        'conditions': [
-            ['OS=="linux"',
+    "target_defaults": {
+        "conditions": [
+            [
+                "OS==\"linux\"",
                 {
-                    'cflags_cc!': [ '-fno-exceptions', '-fno-rtti' ],
-                    'cflags_cc+': ['-frtti'],
-                    'cflags': [ '-O3', '-march=native', '-w' ]
+                    "cflags_cc!": [
+                        "-fno-exceptions",
+                        "-fno-rtti"
+                    ],
+                    "cflags_cc+": ["-frtti"],
+                    "cflags": [
+                        "-O3",
+                        "-march=native",
+                        "-w"
+                    ]
                 }
             ],
-            ['OS=="mac"',
+            [
+                "OS==\"mac\"",
                 {
-                    'xcode_settings': {
-                        'GCC_ENABLE_CPP_RTTI': 'YES',
-                        'GCC_ENABLE_CPP_EXCEPTIONS': 'YES',
-                        'OTHER_CFLAGS': [ '-O3', '-march=native', '-w' ]
+                    "xcode_settings": {
+                        "GCC_ENABLE_CPP_RTTI": "YES",
+                        "GCC_ENABLE_CPP_EXCEPTIONS": "YES",
+                        "OTHER_CFLAGS": [
+                            "-O3",
+                            "-march=native",
+                            "-w"
+                        ]
                     }
                 }
             ],
-            ['OS=="win"',
+            [
+                "OS==\"win\"",
                 {
-                    'configurations': {
-                        'Debug': {
-                            'msvs_settings': {
-                                'VCCLCompilerTool': {
-                                    'ExceptionHandling': '1',
-                                },
-                            },
+                    "configurations": {
+                        "Debug": {
+                            "msvs_settings": {
+                                "VCCLCompilerTool": {
+                                    "ExceptionHandling": "1"
+                                }
+                            }
                         },
-                        'Release': {
-                            'msvs_settings': {
-                                'VCCLCompilerTool': {
-                                    'WarningLevel': '0',
-                                    'ExceptionHandling': '1',
-                                },
-                            },
-                        },
-                    },
+                        "Release": {
+                            "msvs_settings": {
+                                "VCCLCompilerTool": {
+                                    "WarningLevel": "0",
+                                    "ExceptionHandling": "1"
+                                }
+                            }
+                        }
+                    }
                 }
             ]
         ]

@@ -288,9 +288,6 @@
                 "../tesseract/viewer/svmnode.cpp",
                 "../tesseract/viewer/svpaint.cpp",
                 "../tesseract/viewer/svutil.cpp",
-                # "../tesseract/vs2010/port/gettimeofday.cpp",
-                # "../tesseract/vs2010/port/strcasestr.cpp",
-                # "../tesseract/vs2010/port/strtok_r.cpp",
                 "../tesseract/wordrec/associate.cpp",
                 "../tesseract/wordrec/chop.cpp",
                 "../tesseract/wordrec/chopper.cpp",
@@ -311,44 +308,29 @@
                 "../tesseract/wordrec/wordclass.cpp",
                 "../tesseract/wordrec/wordrec.cpp"
             ],
-            'conditions': [
-                ['OS=="win"',
+            "conditions": [
+                [
+                    "OS==\"linux\"",
                     {
-                        'defines': [
-                            '__MSW32__',
-                            '_CRT_SECURE_NO_WARNINGS',
-                            'WINDLLNAME="libtesseract"',
-                        ],
-                        'include_dirs': [
-                            'port',
-                        ],
-                        'sources': [
-                            'port/gettimeofday.cpp',
-                            'port/strcasestr.cpp',
-                            'port/strtok_r.cpp',
-                        ],
-                        'link_settings': {
-                            'libraries': [
-                                '-lws2_32.lib',
-                                '-lUser32.lib',
-                            ],
-                        },
-                        'configurations': {
-                            'Debug': {
-                                'msvs_settings': {
-                                    'VCCLCompilerTool': {
-                                        'CompileAs': '2',
-                                    },
-                                },
-                            },
-                            'Release': {
-                                'msvs_settings': {
-                                    'VCCLCompilerTool': {
-                                        'CompileAs': '2',
-                                    },
-                                },
-                            },
-                        },
+                        "include_dirs": [
+                            "platform-includes/linux/opencv"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"mac\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/mac/opencv"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"win\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/win/opencv"
+                        ]
                     }
                 ]
             ]
