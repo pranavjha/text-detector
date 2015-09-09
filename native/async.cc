@@ -1,8 +1,8 @@
 #include <iostream>
 #include <node.h>
 #include <nan.h>
-#include "ocr/main.h"
 #include "async.h"
+#include <ocr/ocr.hpp>
 
 using namespace std;
 using namespace v8;
@@ -21,17 +21,17 @@ using Nan::To;
 
 class OcrWorker : public AsyncWorker {
     public:
-        OcrWorker(Callback *callback, string path, bool detectRegions) : AsyncWorker(callback), path(path), detectRegions(detectRegions), decodedText("") {}
+        OcrWorker(Callback *callback, string path, bool detectRegions) : AsyncWorker(callback), path(path), detectRegions(detectRegions), decodedText() {}
 
         ~OcrWorker() {}
 
         void Execute () {
-            decodedText = Ocr(path, detectRegions);
+            decodedText = Ocr(path, Box());
         }
 
         void HandleOKCallback () {
             Local<Value> argv[] = {
-                Null(),
+                Nan::Null(),
                 Nan::New(decodedText).ToLocalChecked()
             };
             callback->Call(2, argv);
@@ -40,7 +40,7 @@ class OcrWorker : public AsyncWorker {
     private:
         string path;
         bool detectRegions;
-        string decodedText;
+        OutputOcr  decodedText;
 };
 
 // Asynchronous access to the `Ocr()` function
