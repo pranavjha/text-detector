@@ -7,7 +7,7 @@
                 "."
             ],
             "sources": [
-                "./main.cc"
+                "./main.cpp"
             ]
         }
     ]

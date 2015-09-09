@@ -15,90 +15,113 @@
 #include  <iostream>
 #include  <iomanip>
 #include "opencv/cv.h"
+
 using namespace std;
 using namespace cv;
 using namespace cv::text;
 
 class Regions{
-public:
-    vector<vector<ERStat> > regions;
-    vector<Rect> groups_boxes;
-    vector< vector<Vec2i> > region_groups;
-    
+    public:
+        vector<vector<ERStat> > regions;
+        vector<Rect> groups_boxes;
+        vector< vector<Vec2i> > region_groups;
 };
-class decodedTxtRegion{
-public:
-    int x1,x2,y1,y2;
-    vector<string> words;
-    vector<float> confidences;
-};
-class outputOCR{
-public:
-    int x1,x2,y1,y2;
-    vector<decodedTxtRegion> decodedText;
-    
-};
-outputOCR Ocr(string path);
-outputOCR Ocr(string path,Rect box);
-Rect groups_draw(Mat &src, vector<Rect> &groups);
-void er_show(vector<Mat> &channels, vector<vector<ERStat> > &regions);
-void er_draw(vector<Mat> &channels, vector<vector<ERStat> > &regions, vector<Vec2i> group, Mat& segmentation);
-vector<Rect> computeGroupsWithMinArea(Mat &src,vector<Mat> &channels,float minArea);
-vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERStat> > regions,vector< vector<Vec2i> > nm_region_groups,vector<Rect> nm_boxes);
-Regions computeRegionGroups(Mat &src,vector<Mat> &channels,float minArea);
-outputOCR detectAndDecode(Mat &src);
 
-outputOCR Ocr(string path,Rect box){
-    
-    namedWindow("grouping",WINDOW_NORMAL);
+class DecodedTxtRegion{
+    public:
+        int x1,x2,y1,y2;
+        vector<string> words;
+        vector<float> confidences;
+};
+
+class OutputOCR{
+    public:
+        int x1,x2,y1,y2;
+        vector<DecodedTxtRegion> decodedText;
+};
+
+OutputOCR Ocr(string path);
+OutputOCR Ocr(string path,Rect box);
+
+Rect groups_draw(Mat &src, vector<Rect> &groups);
+
+void er_show(vector<Mat> &channels, vector<vector<ERStat> > &regions);
+
+void er_draw(vector<Mat> &channels, vector<vector<ERStat> > &regions, vector<Vec2i> group, Mat& segmentation);
+
+vector<Rect> computeGroupsWithMinArea(Mat &src,vector<Mat> &channels,float minArea);
+
+vector<DecodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERStat> > regions,vector< vector<Vec2i> > nm_region_groups,vector<Rect> nm_boxes);
+
+Regions computeRegionGroups(Mat &src,vector<Mat> &channels,float minArea);
+
+OutputOCR detectAndDecode(Mat &src);
+
+
+OutputOCR Ocr(string path,Rect box) {
+    // namedWindow("grouping",WINDOW_NORMAL);
+    // read the image
     Mat src = imread(path);
+    // clone the image
     Mat clonesrc = src.clone();
-    Mat croppedImage = clonesrc(Rect(box.tl().x,box.tl().y,box.br().x - box.tl().x, box.br().y - box.tl().y));
-    outputOCR output;
-    cvtColor(src,src,COLOR_RGB2GRAY);
+    // crop the image
+    Mat croppedImage = clonesrc(Rect(box.tl().x, box.tl().y, (box.br().x - box.tl().x), (box.br().y - box.tl().y)));
+    // convert image to gray
+    cvtColor(croppedImage, croppedImage, COLOR_RGB2GRAY);
+    
     Mat dst = Mat::zeros(croppedImage.rows+2, croppedImage.cols+2, CV_8UC1);
-    int thresh=(src.rows/10 * 2 ) +1;
+    
+    int thresh= (croppedImage.rows * 2)/10 + 1;
+    // do adaptive threshholding
     adaptiveThreshold(croppedImage, croppedImage, 255, ADAPTIVE_THRESH_GAUSSIAN_C, THRESH_BINARY,thresh , -10);
-    imwrite("/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/_3.jpg",src);
+    // imwrite("/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/_3.jpg",src);
     vector<Rect>   boxes;
-//    imwrite("/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/_3.jpg",dst);
     vector<string> words;
     vector<float>  confidences;
+    
+    // run ocr
     string op;
     Ptr<OCRTesseract> ocr = OCRTesseract::create();
     ocr->run(croppedImage, op, &boxes, &words, &confidences, OCR_LEVEL_WORD);
- cout << "OCR output = " << op <<  "length = " << op.size() << endl;
-    vector<decodedTxtRegion> decodedTxtRegions;
+    cout << "OCR output = " << op <<  "length = " << op.size() << endl;
+    vector<DecodedTxtRegion> DecodedTxtRegions;
 
-    decodedTxtRegion decodedTxt;
-    decodedTxt.x1=box.tl().x;
-    decodedTxt.x2=box.br().x;
-    decodedTxt.y1=box.tl().y;
-    decodedTxt.y2=box.br().y;
+    DecodedTxtRegion decodedTxt;
+    decodedTxt.x1 = box.tl().x;
+    decodedTxt.x2 = box.br().x;
+    decodedTxt.y1 = box.tl().y;
+    decodedTxt.y2 = box.br().y;
     
-    decodedTxt.words=words;
-    decodedTxt.confidences=confidences;
-    decodedTxtRegions.push_back(decodedTxt);
-    output.decodedText=decodedTxtRegions;
+    decodedTxt.words = words;
+    decodedTxt.confidences = confidences;
+    DecodedTxtRegions.push_back(decodedTxt);
+    OutputOCR output;
+    output.decodedText=DecodedTxtRegions;
     return output;
 }
-outputOCR Ocr (string path)
-{
-    namedWindow("grouping",WINDOW_NORMAL);
+
+OutputOCR Ocr (string path) {
+    // namedWindow("grouping",WINDOW_NORMAL);
     Mat src = imread(path);
-    outputOCR output= detectAndDecode(src);
-    return output;
+    return detectAndDecode(src);
 }
-outputOCR detectAndDecode(Mat &src){
+
+OutputOCR detectAndDecode(Mat &src){
+    
     // Extract channels to be processed individually
     vector<Mat> channels;
     computeNMChannels(src, channels);
     
     int cn = (int)channels.size();
+    
+    // TODO: how did you get this?
     int minArea= 0.0080f;
+    
     // Append negative channels to detect ER- (bright regions over dark background)
-    for (int c = 0; c < cn-1; c++)
+    for (int c = 0; c < cn-1; c++) {
         channels.push_back(255-channels[c]);
+    }
+    
     vector<Rect> groups_boxes;
     Regions region=computeRegionGroups(src,channels,minArea);
     groups_boxes=region.groups_boxes;
@@ -106,30 +129,29 @@ outputOCR detectAndDecode(Mat &src){
         groups_boxes=computeGroupsWithMinArea(src,channels,minArea);
     }
     cout<<"received boxes"<<groups_boxes.size();
+    
     // draw groups
    	Rect group_box= groups_draw(src, groups_boxes);
-    imwrite("/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/_2.jpg",src);
-    vector<decodedTxtRegion> decodedTxt=doOCR(src,channels,region.regions,region.region_groups,groups_boxes);
-    outputOCR output;
+    // imwrite("/Users/prjha/Documents/git/pranavjha/_scene-text-detector/samples/_2.jpg",src);
+    vector<DecodedTxtRegion> decodedTxt=doOCR(src,channels,region.regions,region.region_groups,groups_boxes);
     
+    OutputOCR output;
     output.x1=group_box.tl().x;
     output.x2=group_box.br().x;
     output.y1=group_box.tl().y;
     output.y2=group_box.br().y;
     output.decodedText=decodedTxt;
-    //imshow("grouping",src);
+    // imshow("grouping",src);
     // memory clean-up
-    if (!groups_boxes.empty())
-    {
+    if (!groups_boxes.empty()) {
         groups_boxes.clear();
     }
     return output;
-
 }
-vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERStat> > regions,vector< vector<Vec2i> > nm_region_groups,vector<Rect> nm_boxes){
-    /*Text Recognition (OCR)*/
-    
+vector<DecodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERStat> > regions,vector< vector<Vec2i> > nm_region_groups,vector<Rect> nm_boxes){
+    // Text Recognition (OCR)
     double t_r = (double)getTickCount();
+    
     Ptr<OCRTesseract> ocr = OCRTesseract::create();
     string output;
     Mat out_img;
@@ -143,10 +165,10 @@ vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERS
     
     t_r = (double)getTickCount();
     
-    vector<decodedTxtRegion> decodedTxtRegions;
+    vector<DecodedTxtRegion> DecodedTxtRegions;
     for (int i=0; i<(int)nm_boxes.size(); i++)
     {
-        rectangle(out_img_detection, nm_boxes[i].tl(), nm_boxes[i].br(), Scalar(0,255,255), 3);
+        // rectangle(out_img_detection, nm_boxes[i].tl(), nm_boxes[i].br(), Scalar(0,255,255), 3);
         
         Mat group_img = Mat::zeros(image.rows+2, image.cols+2, CV_8UC1);
         er_draw(channels, regions, nm_region_groups[i], group_img);
@@ -165,7 +187,7 @@ vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERS
         
         output.erase(remove(output.begin(), output.end(), '\n'), output.end());
         cout << "OCR output = \"" << output << "\" lenght = " << output.size() << endl;
-        decodedTxtRegion decodedTxt;
+        DecodedTxtRegion decodedTxt;
         decodedTxt.x1=nm_boxes[i].tl().x;
         decodedTxt.x2=nm_boxes[i].br().x;
         decodedTxt.y1=nm_boxes[i].tl().y;
@@ -173,24 +195,21 @@ vector<decodedTxtRegion> doOCR(Mat &image,vector<Mat> channels,vector<vector<ERS
 
         decodedTxt.words=words;
         decodedTxt.confidences=confidences;
-        decodedTxtRegions.push_back(decodedTxt);
+        DecodedTxtRegions.push_back(decodedTxt);
         for (int j=0; j<(int)boxes.size(); j++)
         {
             boxes[j].x += nm_boxes[i].x-15;
             boxes[j].y += nm_boxes[i].y-15;
-            
-            //cout << "  word = " << words[j] << "\t confidence = " << confidences[j] << endl;
+            // cout << "  word = " << words[j] << "\t confidence = " << confidences[j] << endl;
             words_detection.push_back(words[j]);
             rectangle(out_img, boxes[j].tl(), boxes[j].br(), Scalar(255,0,255),3);
             Size word_size = getTextSize(words[j], FONT_HERSHEY_SIMPLEX, (double)scale_font, (int)(3*scale_font), NULL);
             rectangle(out_img, boxes[j].tl()-Point(3,word_size.height+3), boxes[j].tl()+Point(word_size.width,0), Scalar(255,0,255),-1);
-            //putText(out_img, words[j], boxes[j].tl()-Point(1,1), FONT_HERSHEY_SIMPLEX, scale_font, Scalar(255,255,255),(int)(3*scale_font));
+            // putText(out_img, words[j], boxes[j].tl()-Point(1,1), FONT_HERSHEY_SIMPLEX, scale_font, Scalar(255,255,255),(int)(3*scale_font));
             out_img_segmentation = out_img_segmentation | group_segmentation;
         }
-        
-        
     }
-    return decodedTxtRegions;
+    return DecodedTxtRegions;
 }
 vector<Rect> computeGroupsWithMinArea(Mat &src,vector<Mat> &channels,float minArea){
     Regions region= computeRegionGroups(src,channels,minArea);
@@ -314,7 +333,6 @@ void er_draw(vector<Mat> &channels, vector<vector<ERStat> > &regions, vector<Vec
 //    tl.x=0;tl.y=0;
 //    br.x=0;br.y=0;
 //    Rect box(tl,br);
-//    outputOCR op= Ocr(path,box);
+//    OutputOCR op= Ocr(path, box);
 //
 //}
-
