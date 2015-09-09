@@ -28,10 +28,10 @@ NAN_METHOD(GetTextSync) {
     OutputOcr detectRegions;
     // if the second argument is passed, we use it
     if (info.Length() > 1){
-        detectRegions = To<bool>(info[1]).FromJust();
+        //detectRegions = To<bool>(info[1]).FromJust();
     }
     // call the decoder here
-    string decodedText = Ocr(path, Box());
+    OutputOcr decodedText = Ocr(path, Box());
     // set the return value
-    info.GetReturnValue().Set(Nan::New(decodedText).ToLocalChecked());
+    info.GetReturnValue().Set(Nan::New(decodedText.ToLocal()));
 }
