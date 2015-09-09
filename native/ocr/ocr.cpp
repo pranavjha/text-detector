@@ -19,8 +19,8 @@ OutputOcr Ocr (string path, Box) {
     vector<float> cf;
     words.push_back("w1");
     words.push_back("w2");
-    cf.push_back(1);
-    cf.push_back(1);
+    cf.push_back(1.0);
+    cf.push_back(2.1);
     dt.box=box;
     dt.words=words;
     dt.confs=cf;
