@@ -959,41 +959,32 @@
                 "../opencv_contrib/modules/xphoto/src/simple_color_balance.cpp"
             ],
             "conditions": [
-                ["OS==\"win\"",
-                    {
-                        "include_dirs": [
-                            "platform-includes/osx/opencv"
-                        ],
-                        "sources": [
-                            "../tesseract/vs2010/port/gettimeofday.cpp",
-                            "../tesseract/vs2010/port/strcasestr.cpp",
-                            "../tesseract/vs2010/port/strtok_r.cpp"
-                        ],
-                        "link_settings": {
-                            "libraries": [
-                                "-lws2_32.lib",
-                                "-lUser32.lib"
-                            ]
-                        },
-                        "configurations": {
-                            "Debug": {
-                                "msvs_settings": {
-                                    "VCCLCompilerTool": {
-                                        "CompileAs": "2"
-                                    }
-                                }
-                            },
-                            "Release": {
-                                "msvs_settings": {
-                                    "VCCLCompilerTool": {
-                                        "CompileAs": "2"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                ]
+            [
+                "OS==\"linux\"",
+                {
+                    "include_dirs": [
+                        "platform-includes/linux/opencv"
+                    ]
+                }
+            ],
+            [
+                "OS==\"mac\"",
+                {
+                    "include_dirs": [
+                        "platform-includes/mac/opencv"
+                    ]
+                }
+            ],
+            [
+                "OS==\"win\"",
+                {
+                    "include_dirs": [
+                        "platform-includes/win/opencv"
+                    ]
+                }
             ]
+        ]
+
         }
     ]
 }
