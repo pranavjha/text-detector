@@ -8,7 +8,8 @@ describe('functionality', function() {
 
         it('should be able to run', function() {
             var result = sceneText.getTextSync('/sample/path/to/a/file');
-            expect(result).to.eql('/sample/path/to/a/file');
+            expect(result.box[0]).to.eql(1);
+		console.log(JSON.stringify(result));
         });
 
         it('should be able to skip region detection', function() {
@@ -26,7 +27,7 @@ describe('functionality', function() {
 
         it('should be able to run', function(done) {
             sceneText.getText('/sample/path/to/a/file', function(err, result) {
-                expect(result).to.eql('/sample/path/to/a/file');
+                console.log(JSON.stringify(result));
                 done(err);
             });
         });

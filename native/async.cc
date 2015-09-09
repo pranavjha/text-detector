@@ -32,7 +32,7 @@ class OcrWorker : public AsyncWorker {
         void HandleOKCallback () {
             Local<Value> argv[] = {
                 Nan::Null(),
-                Nan::New(decodedText).ToLocalChecked()
+                decodedText.ToLocal()//Nan::New(decodedText).ToLocalChecked()
             };
             callback->Call(2, argv);
         }
@@ -51,9 +51,9 @@ NAN_METHOD(GetTextAsync) {
     // the second (optional) parameter is false if region detection has to be skipped
     bool detectRegions = true;
     // if the second argument is passed, we use it
-    if (info.Length() > 2){
-        detectRegions = To<bool>(info[1]).FromJust();
-    }
+    //if (info.Length() > 2){
+      //  detectRegions = To<bool>(info[1]).FromJust();
+    //}
     // callback will be the last argument
     Callback *callback = new Callback(info[info.Length() - 1].As<Function>());
     // call the Ocr here - Async
