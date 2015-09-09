@@ -12,7 +12,8 @@
                     "cflags": [
                         "-O3",
                         "-march=native",
-                        "-w"
+                        "-w",
+                        "-Wno-non-pod-varargs"
                     ]
                 }
             ],
@@ -25,7 +26,8 @@
                         "OTHER_CFLAGS": [
                             "-O3",
                             "-march=native",
-                            "-w"
+                            "-w",
+                            "-Wno-non-pod-varargs"
                         ]
                     }
                 }
