@@ -1,11 +1,14 @@
 {
-    "includes": [ "./common.gyp" ],
+    "includes": ["./common.gyp"],
     "targets": [
         {
             "target_name": "leptonica",
             "type": "static_library",
             "include_dirs": [
                 "../leptonica/src/leptonica/src"
+            ],
+            "defines!": [
+                "_LARGEFILE_SOURCE"
             ],
             "sources": [
                 "../leptonica/src/adaptmap.c",

@@ -235,7 +235,7 @@ lept_seek_proc(thandle_t  cookie,
     if (pos == _ftelli64(fp))
         return (tsize_t)pos;
 #elif defined(_LARGEFILE_SOURCE)
-    off_t pos = 0;
+    off64_t pos = 0;
     if (!cookie || !fp)
         return (tsize_t)-1;
     switch (whence) {
@@ -250,7 +250,7 @@ lept_seek_proc(thandle_t  cookie,
         pos = ftello(fp);
         break;
     }
-    pos = (off_t)(pos + offs);
+    pos = (off64_t)(pos + offs);
     fseeko(fp, pos, SEEK_SET);
     if (pos == ftello(fp))
         return (tsize_t)pos;
@@ -302,8 +302,8 @@ lept_size_proc(thandle_t  cookie)
     size = _ftelli64(fp);
     _fseeki64(fp, pos, SEEK_SET);
 #elif defined(_LARGEFILE_SOURCE)
-    off_t pos;
-    off_t size;
+    off64_t pos;
+    off64_t size;
     if (!fp)
         return (tsize_t)-1;
     pos = ftello(fp);
