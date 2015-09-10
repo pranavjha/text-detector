@@ -3,4 +3,5 @@
 #include <util/output_ocr.hpp>
 #include <util/decoded_text.hpp>
 
+OutputOcr Ocr(std::string);
 OutputOcr Ocr(std::string, Box);

@@ -3,7 +3,8 @@
 #include <nan.h>
 #include "async.h"
 #include <ocr/ocr.hpp>
-
+#include <string>
+#include <stdlib.h>
 using namespace std;
 using namespace v8;
 using namespace Nan;
@@ -21,12 +22,17 @@ using Nan::To;
 
 class OcrWorker : public AsyncWorker {
     public:
-        OcrWorker(Callback *callback, string path, bool detectRegions) : AsyncWorker(callback), path(path), detectRegions(detectRegions), decodedText() {}
+        OcrWorker(Callback *callback, string path,Box box) : AsyncWorker(callback), path(path), box(box), decodedText() {}
 
         ~OcrWorker() {}
 
         void Execute () {
-            decodedText = Ocr(path, Box());
+		if(box.x1){
+			 decodedText = Ocr(path, box);
+		}
+		else{
+            		decodedText = Ocr(path);
+		}
         }
 
         void HandleOKCallback () {
@@ -39,7 +45,7 @@ class OcrWorker : public AsyncWorker {
 
     private:
         string path;
-        bool detectRegions;
+        Box box;
         OutputOcr  decodedText;
 };
 
@@ -48,14 +54,24 @@ NAN_METHOD(GetTextAsync) {
     // get the value of path
     String::Utf8Value p(info[0]);
     string path = string(*p);
+    Box box;
     // the second (optional) parameter is false if region detection has to be skipped
-    bool detectRegions = true;
     // if the second argument is passed, we use it
-    //if (info.Length() > 2){
-      //  detectRegions = To<bool>(info[1]).FromJust();
-    //}
-    // callback will be the last argument
-    Callback *callback = new Callback(info[info.Length() - 1].As<Function>());
-    // call the Ocr here - Async
-    AsyncQueueWorker(new OcrWorker(callback, path, detectRegions));
+	if(info.Length() >2 ) {
+ 	   v8::Local<v8::Array> boxArr= v8::Local<v8::Array>::Cast(info[1]);
+	   int arr[boxArr->Length()];
+           for(int i =0;i< boxArr->Length();i++){
+              String::Utf8Value xp(boxArr->Get(i)->ToString());
+              string x=string(*xp);
+              //convert to int
+              int pos=atoi(x.c_str());
+              arr[i]=pos;
+           }
+	   box = Box(arr);
+	}
+	// callback will be the last argument
+   	 Callback *callback = new Callback(info[info.Length() - 1].As<Function>());
+    	// call the Ocr here - Async
+    	AsyncQueueWorker(new OcrWorker(callback, path, box));
 }
+
