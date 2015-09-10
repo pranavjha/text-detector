@@ -1,8 +1,8 @@
 #include <iostream>
 #include <node.h>
 #include <nan.h>
-#include "ocr/main.h"
 #include "async.h"
+#include <ocr/ocr.hpp>
 
 using namespace std;
 using namespace v8;
@@ -21,18 +21,18 @@ using Nan::To;
 
 class OcrWorker : public AsyncWorker {
     public:
-        OcrWorker(Callback *callback, string path, bool detectRegions) : AsyncWorker(callback), path(path), detectRegions(detectRegions), decodedText("") {}
+        OcrWorker(Callback *callback, string path, bool detectRegions) : AsyncWorker(callback), path(path), detectRegions(detectRegions), decodedText() {}
 
         ~OcrWorker() {}
 
         void Execute () {
-            decodedText = Ocr(path, detectRegions);
+            decodedText = Ocr(path, Box());
         }
 
         void HandleOKCallback () {
             Local<Value> argv[] = {
-                Null(),
-                Nan::New(decodedText).ToLocalChecked()
+                Nan::Null(),
+                decodedText.ToLocal()//Nan::New(decodedText).ToLocalChecked()
             };
             callback->Call(2, argv);
         }
@@ -40,7 +40,7 @@ class OcrWorker : public AsyncWorker {
     private:
         string path;
         bool detectRegions;
-        string decodedText;
+        OutputOcr  decodedText;
 };
 
 // Asynchronous access to the `Ocr()` function
@@ -51,9 +51,9 @@ NAN_METHOD(GetTextAsync) {
     // the second (optional) parameter is false if region detection has to be skipped
     bool detectRegions = true;
     // if the second argument is passed, we use it
-    if (info.Length() > 2){
-        detectRegions = To<bool>(info[1]).FromJust();
-    }
+    //if (info.Length() > 2){
+      //  detectRegions = To<bool>(info[1]).FromJust();
+    //}
     // callback will be the last argument
     Callback *callback = new Callback(info[info.Length() - 1].As<Function>());
     // call the Ocr here - Async

@@ -4,10 +4,11 @@
             "target_name": "ocr",
             "type": "static_library",
             "include_dirs": [
-                "."
+                "<!(node -e \"require('nan')\")",
+                "../",
             ],
             "sources": [
-                "./main.cc"
+                "./ocr.cpp"
             ]
         }
     ]
