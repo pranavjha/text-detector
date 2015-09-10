@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "main": "./lib",
     "scripts": {
-        "install": "grunt exec:rebuild",
+        "install": "./node_modules/.bin/node-gyp rebuild",
         "test": "grunt test"
     },
     "dependencies": {
@@ -14,7 +14,6 @@
         "mocha": "latest",
         "chai": "latest",
         "grunt": "latest",
-        "grunt-exec": "latest",
         "grunt-docco": "latest",
         "grunt-gh-pages": "latest",
         "grunt-mocha-test": "latest",

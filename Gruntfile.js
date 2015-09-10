@@ -1,7 +1,6 @@
 'use strict';
 module.exports = function(grunt) {
     // loading the npm tasks
-    grunt.loadNpmTasks('grunt-exec');
     grunt.loadNpmTasks('grunt-docco');
     grunt.loadNpmTasks('grunt-gh-pages');
     grunt.loadNpmTasks('grunt-mocha-test');
@@ -10,13 +9,6 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
             pkg: grunt.file.readJSON('package.json'),
-            exec: {
-                rebuild: {
-                    cmd: './node_modules/.bin/node-gyp rebuild',
-                    stdout: (grunt.option('debug') || false),
-                    stderr: (grunt.option('debug') || false)
-                }
-            },
             clean: [
                 '.test'
             ],
@@ -141,7 +133,6 @@ module.exports = function(grunt) {
         }
     );
     grunt.registerTask('test', [
-        'exec',
         'jshint',
         'mochaTest'
     ]);
