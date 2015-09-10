@@ -5,7 +5,10 @@
             "target_name": "leptonica",
             "type": "static_library",
             "include_dirs": [
-                "../leptonica/src/leptonica/src"
+                "../libpng",
+                "../jpeg",
+                "../libtiff",
+                "../leptonica/src"
             ],
             "defines!": [
                 "_LARGEFILE_SOURCE"
@@ -182,6 +185,38 @@
                 "../leptonica/src/xtractprotos.c",
                 "../leptonica/src/zlibmem.c",
                 "../leptonica/src/zlibmemstub.c"
+            ],
+            "conditions": [
+                [
+                    "OS==\"linux\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/linux/jpeg",
+                            "platform-includes/linux/libpng",
+                            "platform-includes/linux/libtiff"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"mac\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/mac/jpeg",
+                            "platform-includes/mac/libpng",
+                            "platform-includes/linux/libtiff"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"win\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/win/jpeg",
+                            "platform-includes/win/libpng",
+                            "platform-includes/linux/libtiff"
+                        ]
+                    }
+                ]
             ]
         }
     ]

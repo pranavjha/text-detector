@@ -959,32 +959,31 @@
                 "../opencv_contrib/modules/xphoto/src/simple_color_balance.cpp"
             ],
             "conditions": [
-            [
-                "OS==\"linux\"",
-                {
-                    "include_dirs": [
-                        "platform-includes/linux/opencv"
-                    ]
-                }
-            ],
-            [
-                "OS==\"mac\"",
-                {
-                    "include_dirs": [
-                        "platform-includes/mac/opencv"
-                    ]
-                }
-            ],
-            [
-                "OS==\"win\"",
-                {
-                    "include_dirs": [
-                        "platform-includes/win/opencv"
-                    ]
-                }
+                [
+                    "OS==\"linux\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/linux/opencv"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"mac\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/mac/opencv"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"win\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/win/opencv"
+                        ]
+                    }
+                ]
             ]
-        ]
-
         }
     ]
 }
