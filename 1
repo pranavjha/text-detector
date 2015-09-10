@@ -9,6 +9,7 @@ using namespace std;
 
 OutputOcr Ocr (string path, Box b) {
     OutputOcr op;
+    Box box(b.x1,b.x2,b.y1,b.y2);
     DecodedText dt,dt1;
     vector<string> words;
     vector<float> cf;
@@ -16,40 +17,17 @@ OutputOcr Ocr (string path, Box b) {
     words.push_back("w2");
     cf.push_back(1.0);
     cf.push_back(2.1);
-    dt.box=b;
+    dt.box=box;
     dt.words=words;
     dt.confs=cf;
-    dt1.box=b;
+    dt1.box=box;
     dt1.words=words;
     dt1.confs=cf;
 
     vector<DecodedText> dtr;
     dtr.push_back(dt);
     dtr.push_back(dt1);
-    op.box=b;
+    op.box=box;
     op.text_vec=dtr;
     return op;
-}
-OutputOcr Ocr(string path){
-	OutputOcr op;
-	int a[]={100,200,300,400};
-	op.box=Box(a);
-    DecodedText dt,dt1;
-    vector<string> words;
-    vector<float> cf;
-    words.push_back("w1");
-    words.push_back("w2");
-    cf.push_back(1.0);
-    cf.push_back(2.1);
-    dt.words=words;
-    dt.confs=cf;
-    dt1.words=words;
-    dt1.confs=cf;
-
-    vector<DecodedText> dtr;
-    dtr.push_back(dt);
-    dtr.push_back(dt1);
-    op.text_vec=dtr;
-    return op;
-
 }
