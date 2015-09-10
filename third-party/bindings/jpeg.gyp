@@ -85,6 +85,9 @@
                 [
                     "OS==\"linux\"",
                     {
+                        "defines": [
+                            "STDC_HEADERS"
+                        ],
                         "include_dirs": [
                             "platform-includes/linux/jpeg"
                         ]
@@ -108,7 +111,8 @@
                     "OS==\"win\"",
                     {
                         "defines": [
-                            "USE_MSDOS_MEMMGR"
+                            "USE_MSDOS_MEMMGR",
+                            "MSDOS"
                         ],
                         "include_dirs": [
                             "platform-includes/win/jpeg"
