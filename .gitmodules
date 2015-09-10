@@ -1,0 +1,9 @@
+[submodule "third-party/opencv_contrib"]
+	path = third-party/opencv_contrib
+	url = https://github.com/Itseez/opencv_contrib.git
+[submodule "third-party/opencv"]
+	path = third-party/opencv
+	url = https://github.com/Itseez/opencv.git
+[submodule "third-party/tesseract"]
+	path = third-party/tesseract
+	url = https://github.com/tesseract-ocr/tesseract.git
