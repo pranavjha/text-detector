@@ -5,6 +5,7 @@
             "target_name": "libtiff",
             "type": "static_library",
             "include_dirs": [
+                "../jpeg",
                 "../libtiff"
             ],
             "sources": [
@@ -43,10 +44,8 @@
                 "../libtiff/tif_swab.c",
                 "../libtiff/tif_thunder.c",
                 "../libtiff/tif_tile.c",
-                "../libtiff/tif_unix.c",
                 "../libtiff/tif_version.c",
                 "../libtiff/tif_warning.c",
-                "../libtiff/tif_win32.c",
                 "../libtiff/tif_write.c",
                 "../libtiff/tif_zip.c"
             ],
@@ -55,7 +54,11 @@
                     "OS==\"linux\"",
                     {
                         "include_dirs": [
+                            "platform-includes/linux/jpeg",
                             "platform-includes/linux/libtiff"
+                        ],
+                        "sources" : [
+                            "../libtiff/tif_unix.c"
                         ]
                     }
                 ],
@@ -63,6 +66,7 @@
                     "OS==\"mac\"",
                     {
                         "include_dirs": [
+                            "platform-includes/mac/jpeg",
                             "platform-includes/mac/libtiff"
                         ]
                     }
@@ -71,8 +75,13 @@
                     "OS==\"win\"",
                     {
                         "include_dirs": [
+                            "platform-includes/win/jpeg",
                             "platform-includes/win/libtiff"
+                        ],
+                        "sources" : [
+                            "../libtiff/tif_win32.c"
                         ]
+
                     }
                 ]
             ]
