@@ -203,7 +203,7 @@
                         "include_dirs": [
                             "platform-includes/mac/jpeg",
                             "platform-includes/mac/libpng",
-                            "platform-includes/linux/libtiff"
+                            "platform-includes/mac/libtiff"
                         ]
                     }
                 ],
@@ -213,7 +213,7 @@
                         "include_dirs": [
                             "platform-includes/win/jpeg",
                             "platform-includes/win/libpng",
-                            "platform-includes/linux/libtiff"
+                            "platform-includes/win/libtiff"
                         ]
                     }
                 ]
