@@ -8,7 +8,7 @@
                 "__OPENCV_BUILD"
             ],
             "include_dirs": [
-		"global-includes",
+		        "global-includes",
                 "../leptonica/src",
                 "../tesseract/api",
                 "../tesseract/ccmain",
