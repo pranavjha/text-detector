@@ -58,7 +58,7 @@
                             "platform-includes/linux/libtiff"
                         ],
                         "sources" : [
-                            "../libtiff/tif_unix.c"
+                            #"../libtiff/tif_unix.c"
                         ]
                     }
                 ],
