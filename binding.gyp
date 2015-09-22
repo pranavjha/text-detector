@@ -16,9 +16,9 @@
                 "native"
             ],
             "sources": [
-                # "native/index.cc",
-                # "native/async.cc",
-                # "native/sync.cc"
+                "native/index.cc",
+                "native/async.cc",
+                "native/sync.cc"
             ]
         }
     ]
