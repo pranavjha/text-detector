@@ -29,7 +29,7 @@
                 "../opencv/3rdparty/openexr/IlmImf/",
                 "../opencv/3rdparty/openexr/IlmThread/",
                 "../opencv/3rdparty/openexr/Imath/",
-                # "../opencv/modules/calib3d/include",
+                "../opencv/modules/calib3d/include",
                 "../opencv/modules/core/include",
                 # "../opencv/modules/cudaarithm/include",
                 # "../opencv/modules/cudabgsegm/include",
@@ -45,8 +45,8 @@
                 "../opencv/modules/cudev/include",
                 "../opencv/modules/features2d/include",
                 "../opencv/modules/flann/include",
-                # "../opencv/modules/hal/include",
-                # "../opencv/modules/highgui/include",
+                "../opencv/modules/hal/include",
+                "../opencv/modules/highgui/include",
                 "../opencv/modules/imgcodecs/include",
                 "../opencv/modules/imgproc/include",
                 # "../opencv/modules/java/include",
@@ -959,32 +959,34 @@
                 "../opencv_contrib/modules/xphoto/src/simple_color_balance.cpp"
             ],
             "conditions": [
-            [
-                "OS==\"linux\"",
-                {
-                    "include_dirs": [
-                        "platform-includes/linux/opencv"
-                    ]
-                }
-            ],
-            [
-                "OS==\"mac\"",
-                {
-                    "include_dirs": [
-                        "platform-includes/mac/opencv"
-                    ]
-                }
-            ],
-            [
-                "OS==\"win\"",
-                {
-                    "include_dirs": [
-                        "platform-includes/win/opencv"
-                    ]
-                }
+                [
+                    "OS==\"linux\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/linux/tesseract",
+                            "platform-includes/linux/opencv"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"mac\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/mac/tesseract",
+                            "platform-includes/mac/opencv"
+                        ]
+                    }
+                ],
+                [
+                    "OS==\"win\"",
+                    {
+                        "include_dirs": [
+                            "platform-includes/win/tesseract",
+                            "platform-includes/win/opencv"
+                        ]
+                    }
+                ]
             ]
-        ]
-
         }
     ]
 }
