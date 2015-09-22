@@ -47,7 +47,7 @@
                 "../libtiff/tif_version.c",
                 "../libtiff/tif_warning.c",
                 "../libtiff/tif_write.c",
-                "../libtiff/tif_zip.c"
+                #"../libtiff/tif_zip.c"
             ],
             "conditions": [
                 [
