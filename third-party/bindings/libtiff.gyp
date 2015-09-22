@@ -36,7 +36,7 @@
                 "../libtiff/tif_ojpeg.c",
                 "../libtiff/tif_open.c",
                 "../libtiff/tif_packbits.c",
-                "../libtiff/tif_pixarlog.c",
+                #"../libtiff/tif_pixarlog.c",
                 "../libtiff/tif_predict.c",
                 "../libtiff/tif_print.c",
                 "../libtiff/tif_read.c",
